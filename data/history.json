@@ -1,0 +1,151 @@
+[
+    {
+        "id": 1,
+        "name": "Nexora Technologies",
+        "limit": 500000,
+        "balance": 463000,
+        "util": 92.6,
+        "risk": "critical",
+        "percent": 92.6
+    },
+    {
+        "id": 2,
+        "name": "Halcyon Retail Group",
+        "limit": 400000,
+        "balance": 352000,
+        "util": 88.0,
+        "risk": "medium",
+        "percent": 88.0
+    },
+    {
+        "id": 3,
+        "name": "Stratum Capital",
+        "limit": 300000,
+        "balance": 235000,
+        "util": 78.3,
+        "risk": "medium",
+        "percent": 78.3
+    },
+    {
+        "id": 4,
+        "name": "Verdant Logistics",
+        "limit": 250000,
+        "balance": 182000,
+        "util": 72.8,
+        "risk": "medium",
+        "percent": 72.8
+    },
+    {
+        "id": 5,
+        "name": "Prism Media Inc.",
+        "limit": 200000,
+        "balance": 130000,
+        "util": 65.0,
+        "risk": "medium",
+        "percent": 65.0
+    },
+    {
+        "id": 6,
+        "name": "Kinetic Health",
+        "limit": 250000,
+        "balance": 123000,
+        "util": 49.2,
+        "risk": "low",
+        "percent": 49.2
+    },
+    {
+        "id": 7,
+        "name": "Nova Energy",
+        "limit": 350000,
+        "balance": 210000,
+        "util": 60.0,
+        "risk": "medium",
+        "percent": 60.0
+    },
+    {
+        "name": "anjali",
+        "id": "10012",
+        "limit": 40000.0,
+        "balance": 10000.0,
+        "prediction": "high",
+        "probability": 67,
+        "percent": 25.0,
+        "risk": "low"
+    },
+    {
+        "id": "10009",
+        "name": "Mandagani Malleswari",
+        "sector": "General",
+        "limit": 120000.0,
+        "balance": 60000.0,
+        "delay": 5,
+        "payHist": "Good",
+        "prediction": "high",
+        "probability": 66,
+        "percent": 50.0,
+        "risk": "low"
+    },
+    {
+        "id": "108",
+        "name": "mani",
+        "sector": "General",
+        "limit": 67000.0,
+        "balance": 30000.0,
+        "delay": 5,
+        "payHist": "Good",
+        "prediction": "high",
+        "probability": 73,
+        "percent": 44.8,
+        "risk": "low"
+    },
+    {
+        "id": "102",
+        "name": "leo servises",
+        "sector": "General",
+        "limit": 270000.0,
+        "balance": 700000.0,
+        "delay": 0,
+        "payHist": "Good",
+        "prediction": "high",
+        "probability": 94,
+        "percent": 259.3,
+        "risk": "critical"
+    },
+    {
+        "id": "1256",
+        "name": "vasu",
+        "sector": "General",
+        "limit": 500000.0,
+        "balance": 20000.0,
+        "delay": 0,
+        "payHist": "Good",
+        "prediction": "high",
+        "probability": 60,
+        "percent": 4.0,
+        "risk": "low"
+    },
+    {
+        "id": "1003",
+        "name": "annn",
+        "sector": "General",
+        "limit": 200000.0,
+        "balance": 50000.0,
+        "delay": 0,
+        "payHist": "Good",
+        "prediction": "high",
+        "probability": 91,
+        "percent": 25.0,
+        "risk": "low"
+    },
+    {
+        "id": "181",
+        "name": "hema",
+        "sector": "General",
+        "limit": 120000.0,
+        "balance": 50000.0,
+        "delay": 0,
+        "payHist": "Good",
+        "prediction": "high",
+        "probability": 77
+    }
+]

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Alerts</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#070B14;
+color:white;
+display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:220px;
+background:#0D1220;
+height:100vh;
+position:fixed;
+border-right:1px solid #1f2937;
+}
+
+.sidebar-header{
+padding:20px;
+font-size:18px;
+font-weight:bold;
+border-bottom:1px solid #1f2937;
+}
+
+.sidebar a{
+display:block;
+padding:12px 20px;
+color:white;
+text-decoration:none;
+}
+
+.sidebar a:hover{
+background:#1f2937;
+}
+
+/* MAIN */
+
+.main{
+margin-left:220px;
+padding:30px;
+width:100%;
+}
+
+/* CARD */
+
+.card{
+background:#111827;
+padding:20px;
+border-radius:10px;
+margin-bottom:15px;
+}
+
+.card2{
+background:#1f2937;
+padding:10px;
+border-radius:6px;
+}
+
+.alert-critical{
+border-left:5px solid #ef4444;
+}
+
+.alert-high{
+border-left:5px solid #f97316;
+}
+
+.red{color:#ef4444;}
+.orange{color:#f97316;}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:10px;
+margin-top:12px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div class="sidebar-header">
+CreditWatch
+</div>
+
+<a href="/dashboard">⬛ Dashboard</a>
+<a href="/predict">🔮 Predict Risk</a>
+<a href="/customers">👥 Customer Records</a>
+<a href="/analysis">📈 Risk Analysis</a>
+<a href="/alerts">🔔 Alerts</a>
+<a href="/dataset">📂 Dataset Upload</a>
+<a href="/model">🤖 Model Info</a>
+<a href="/settings">⚙️ Admin Settings</a>
+</div>
+
+
+<!-- MAIN CONTENT -->
+
+<div class="main">
+
+<h2>Alerts & Notifications</h2>
+
+{% set alerts = [] %}
+
+{% for c in customers %}
+{% if c.risk == "critical" or c.risk == "high" %}
+{% set _ = alerts.append(c) %}
+{% endif %}
+{% endfor %}
+
+<p>{{alerts|length}} high-priority customers requiring attention</p>
+
+
+{% if alerts|length == 0 %}
+
+<div class="card" style="text-align:center">
+
+<h2>✅</h2>
+<h3>No active alerts</h3>
+<p>All customers are within safe credit limits</p>
+
+</div>
+
+{% else %}
+
+{% for c in alerts %}
+
+<div class="card alert-{{c.risk}}">
+
+<div style="display:flex;justify-content:space-between">
+
+<div>
+<strong>{{c.name}}</strong>
+<span style="font-size:12px;color:gray">{{c.id}}</span>
+</div>
+
+<div style="font-size:20px;font-weight:bold" class="{% if c.risk=='critical' %}red{% else %}orange{% endif %}">
+{{c.prob}}%
+</div>
+
+</div>
+
+<p>
+Customer <b>{{c.id}}</b> is at 
+<b class="{% if c.risk=='critical' %}red{% else %}orange{% endif %}">
+{{c.risk|upper}}
+</b>
+risk of credit exhaustion.
+</p>
+
+
+<div class="grid">
+
+<div class="card2">
+<div style="font-size:11px;color:gray">Used</div>
+<div>{{c.balance}}</div>
+</div>
+
+<div class="card2">
+<div style="font-size:11px;color:gray">Limit</div>
+<div>{{c.limit}}</div>
+</div>
+
+<div class="card2">
+<div style="font-size:11px;color:gray">Utilization</div>
+<div>{{((c.balance/c.limit)*100)|round(1)}}%</div>
+</div>
+
+<div class="card2">
+<div style="font-size:11px;color:gray">Days Left</div>
+<div>{{c.daysLeft}}d</div>
+</div>
+
+</div>
+
+<div style="margin-top:10px;font-size:13px">
+
+<strong>Suggested Action:</strong>
+
+{% if c.risk == "critical" %}
+Freeze credit immediately and escalate to risk committee.
+{% else %}
+Schedule customer review and monitor spending weekly.
+{% endif %}
+
+</div>
+
+</div>
+
+{% endfor %}
+
+{% endif %}
+
+</div>
+
+</body>
+</html>

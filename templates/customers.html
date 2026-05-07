@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Customer Records</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#070B14;
+color:white;
+display:flex;
+}
+
+.sidebar{
+width:220px;
+background:#0D1220;
+height:100vh;
+position:fixed;
+border-right:1px solid #1f2937;
+}
+
+.sidebar-header{
+padding:20px;
+font-size:18px;
+font-weight:bold;
+border-bottom:1px solid #1f2937;
+}
+
+.sidebar a{
+display:block;
+padding:12px 20px;
+color:white;
+text-decoration:none;
+}
+
+.sidebar a:hover{
+background:#1f2937;
+}
+
+.main{
+margin-left:220px;
+padding:30px;
+width:100%;
+}
+
+.card{
+background:#111827;
+border-radius:10px;
+overflow:hidden;
+}
+
+.topbar{
+padding:15px;
+border-bottom:1px solid #1f2937;
+display:flex;
+gap:10px;
+}
+
+input{
+padding:8px;
+border:none;
+border-radius:6px;
+background:#1f2937;
+color:white;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+border-bottom:1px solid #1f2937;
+}
+
+.risk-high{color:#ef4444;}
+.risk-medium{color:#eab308;}
+.risk-low{color:#22c55e;}
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>CreditWatch</h2>
+<a href="/dashboard">⬛ Dashboard</a>
+<a href="/predict">🔮 Predict Risk</a>
+<a href="/customers">👥 Customer Records</a>
+<a href="/analysis">📈 Risk Analysis</a>
+<a href="/alerts">🔔 Alerts</a>
+<a href="/dataset">📂 Dataset Upload</a>
+<a href="/model">🤖 Model Info</a>
+<a href="/settings">⚙️ Admin Settings</a>
+</div>
+
+<div class="main">
+
+
+<h2>Customer Records</h2>
+
+<div class="card">
+
+<div class="topbar">
+
+<input id="search" onkeyup="searchCustomer()" placeholder="Search by name or ID">
+
+<select>
+<option>All Risks</option>
+<option>Critical</option>
+<option>High</option>
+<option>Medium</option>
+<option>Low</option>
+</select>
+
+<select>
+<option>Sort: Utilization</option>
+<option>Sort: Days Left</option>
+<option>Sort: Name</option>
+</select>
+
+</div>
+
+
+
+<table id="customerTable">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Sector</th>
+<th>Limit</th>
+<th>Balance</th>
+<th>Utilization</th>
+<th>Days Left</th>
+<th>Payment</th>
+<th>Risk</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+</div>
+
+<script>
+
+function searchCustomer(){
+let input=document.getElementById("search").value.toLowerCase();
+let rows=document.querySelectorAll("#customerTable tbody tr");
+
+rows.forEach(r=>{
+let name=r.cells[1].innerText.toLowerCase();
+let id=r.cells[0].innerText.toLowerCase();
+r.style.display=(name.includes(input)||id.includes(input))?"":"none";
+});
+}
+
+// 🔥 REALTIME LOAD
+setInterval(loadCustomers,3000);
+
+function loadCustomers(){
+
+fetch("/customers_data")
+.then(res=>res.json())
+.then(data=>{
+
+let tbody=document.querySelector("#customerTable tbody");
+tbody.innerHTML="";
+
+data.forEach(c=>{
+
+tbody.innerHTML+=`
+<tr>
+<td>${c.id}</td>
+<td>${c.name}</td>
+<td>${c.sector}</td>
+<td>${c.limit}</td>
+<td>${c.balance}</td>
+<td>${c.utilization}%</td>
+<td>${c.daysLeft}</td>
+<td>${c.payHist}</td>
+<td class="risk-${c.risk}">${c.risk}</td>
+</tr>
+`;
+
+});
+
+});
+
+}
+
+// initial load
+loadCustomers();
+
+</script>
+
+</body>
+</html>

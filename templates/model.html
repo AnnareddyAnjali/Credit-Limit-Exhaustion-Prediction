@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Model Information</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#070B14;
+color:white;
+display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:220px;
+background:#0D1220;
+height:100vh;
+position:fixed;
+border-right:1px solid #1f2937;
+}
+
+.sidebar-header{
+padding:20px;
+font-size:18px;
+font-weight:bold;
+border-bottom:1px solid #1f2937;
+}
+
+.sidebar a{
+display:block;
+padding:12px 20px;
+color:white;
+text-decoration:none;
+}
+
+.sidebar a:hover{
+background:#1f2937;
+}
+
+/* MAIN */
+
+.main{
+margin-left:220px;
+padding:30px;
+width:100%;
+}
+
+/* GRID */
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+/* CARD */
+
+.card{
+background:#111827;
+padding:24px;
+border-radius:10px;
+}
+
+.card2{
+background:#1f2937;
+padding:14px;
+border-radius:8px;
+}
+
+/* TABLE ROW */
+
+.row{
+display:flex;
+justify-content:space-between;
+padding:10px 0;
+border-bottom:1px solid #1f2937;
+font-size:13px;
+}
+
+/* BAR */
+
+.bar{
+height:10px;
+background:#1f2937;
+border-radius:5px;
+overflow:hidden;
+}
+
+.bar-fill{
+height:100%;
+}
+
+/* COLORS */
+
+.green{background:#10B981}
+.blue{background:#3B82F6}
+.teal{background:#14B8A6}
+.yellow{background:#F59E0B}
+
+/* FEATURE GRID */
+
+.feature-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:12px;
+margin-top:10px;
+}
+
+.notice{
+margin-top:20px;
+background:#064e3b;
+border-radius:8px;
+padding:12px;
+font-size:13px;
+color:#34d399;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div class="sidebar-header">
+CreditWatch
+</div>
+<a href="/dashboard">⬛ Dashboard</a>
+<a href="/predict">🔮 Predict Risk</a>
+<a href="/customers">👥 Customer Records</a>
+<a href="/analysis">📈 Risk Analysis</a>
+<a href="/alerts">🔔 Alerts</a>
+<a href="/dataset">📂 Dataset Upload</a>
+<a href="/model">🤖 Model Info</a>
+<a href="/settings">⚙️ Admin Settings</a>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+<h2>Model Information</h2>
+<p>ML model performance metrics and configuration</p>
+
+<div class="grid">
+
+<!-- ALGORITHM DETAILS -->
+
+<div class="card">
+
+<h3>Algorithm Details</h3>
+
+<div class="row"><span>Algorithm</span><span><b>Random Forest Classifier</b></span></div>
+<div class="row"><span>Version</span><span><b>2.1.4</b></span></div>
+<div class="row"><span>Last Trained</span><span><b>March 7, 2026</b></span></div>
+<div class="row"><span>Training Samples</span><span><b>12,450 records</b></span></div>
+<div class="row"><span>Features Used</span><span><b>9 input features</b></span></div>
+<div class="row"><span>Framework</span><span><b>Scikit-learn 1.4</b></span></div>
+
+</div>
+
+
+<!-- PERFORMANCE METRICS -->
+
+<div class="card">
+
+<h3>Performance Metrics</h3>
+
+<p>Accuracy 91%</p>
+<div class="bar"><div class="bar-fill green" style="width:91%"></div></div>
+
+<p>Precision 89%</p>
+<div class="bar"><div class="bar-fill blue" style="width:89%"></div></div>
+
+<p>Recall 87%</p>
+<div class="bar"><div class="bar-fill teal" style="width:87%"></div></div>
+
+<p>F1 Score 88%</p>
+<div class="bar"><div class="bar-fill yellow" style="width:88%"></div></div>
+
+<div class="notice">
+✅ Model is performing within acceptable thresholds.  
+Next scheduled retraining: April 1, 2026.
+</div>
+
+</div>
+
+
+<!-- FEATURE IMPORTANCE -->
+
+<div class="card" style="grid-column:span 2">
+
+<h3>Feature Importance</h3>
+
+<div class="feature-grid">
+
+<div class="card2">
+Credit Utilization %
+<div class="bar"><div class="bar-fill blue" style="width:42%"></div></div>
+<b>42%</b>
+</div>
+
+<div class="card2">
+Payment History
+<div class="bar"><div class="bar-fill blue" style="width:21%"></div></div>
+<b>21%</b>
+</div>
+
+<div class="card2">
+Repayment Delay
+<div class="bar"><div class="bar-fill blue" style="width:16%"></div></div>
+<b>16%</b>
+</div>
+
+<div class="card2">
+Monthly Spending
+<div class="bar"><div class="bar-fill blue" style="width:10%"></div></div>
+<b>10%</b>
+</div>
+
+<div class="card2">
+Min Payment Made
+<div class="bar"><div class="bar-fill blue" style="width:7%"></div></div>
+<b>7%</b>
+</div>
+
+<div class="card2">
+Transaction Count
+<div class="bar"><div class="bar-fill blue" style="width:4%"></div></div>
+<b>4%</b>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dataset Upload</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#070B14;
+color:white;
+display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:220px;
+background:#0D1220;
+height:100vh;
+position:fixed;
+border-right:1px solid #1f2937;
+}
+
+.sidebar-header{
+padding:20px;
+font-size:18px;
+font-weight:bold;
+border-bottom:1px solid #1f2937;
+}
+
+.sidebar a{
+display:block;
+padding:12px 20px;
+color:white;
+text-decoration:none;
+}
+
+.sidebar a:hover{
+background:#1f2937;
+}
+
+/* MAIN */
+
+.main{
+margin-left:220px;
+padding:30px;
+width:100%;
+}
+
+/* GRID */
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+/* CARD */
+
+.card{
+background:#111827;
+padding:24px;
+border-radius:10px;
+}
+
+/* UPLOAD BOX */
+
+.upload-box{
+border:2px dashed #374151;
+border-radius:10px;
+padding:40px;
+text-align:center;
+cursor:pointer;
+}
+
+.upload-box:hover{
+border-color:#2563eb;
+}
+
+/* BUTTON */
+
+button{
+padding:10px 15px;
+border:none;
+background:#2563eb;
+color:white;
+border-radius:6px;
+cursor:pointer;
+margin-top:10px;
+}
+
+button:hover{
+background:#1d4ed8;
+}
+
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+th,td{
+border-bottom:1px solid #1f2937;
+padding:8px;
+font-size:12px;
+text-align:left;
+}
+
+th{
+color:#9CA3AF;
+}
+
+.success{
+background:#064e3b;
+padding:10px;
+border-radius:6px;
+margin-top:10px;
+color:#34d399;
+text-align:center;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div class="sidebar-header">
+CreditWatch
+</div>
+<a href="/dashboard">⬛ Dashboard</a>
+<a href="/predict">🔮 Predict Risk</a>
+<a href="/customers">👥 Customer Records</a>
+<a href="/analysis">📈 Risk Analysis</a>
+<a href="/alerts">🔔 Alerts</a>
+<a href="/dataset">📂 Dataset Upload</a>
+<a href="/model">🤖 Model Info</a>
+<a href="/settings">⚙️ Admin Settings</a>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+<h2>Dataset Upload</h2>
+<p>Upload CSV data to train or update the ML model</p>
+
+<div class="grid">
+
+<!-- UPLOAD CARD -->
+
+<div class="card">
+
+<h3>Upload CSV Dataset</h3>
+
+<div class="upload-box" onclick="document.getElementById('fileInput').click()">
+📂 Click to upload CSV
+</div>
+
+<input id="fileInput" type="file" accept=".csv" style="display:none" onchange="previewFile(event)">
+
+<button onclick="trainModel()">🤖 Train Model</button>
+
+<div id="successMsg" class="success" style="display:none">
+✅ Model trained successfully! Accuracy: 91.4%
+</div>
+
+</div>
+
+
+<!-- PREVIEW CARD -->
+
+<div class="card">
+
+<h3>Dataset Preview</h3>
+
+<table id="previewTable">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Limit</th>
+<th>Balance</th>
+<th>Monthly</th>
+<th>Txns</th>
+<th>PayHist</th>
+<th>Delay</th>
+<th>MinPay</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td colspan="9" style="text-align:center;color:gray">
+No dataset uploaded yet
+</td>
+</tr>
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+/* PREVIEW CSV */
+
+function previewFile(event){
+
+const file=event.target.files[0]
+
+if(!file)return
+
+const reader=new FileReader()
+
+reader.onload=function(e){
+
+const text=e.target.result
+const rows=text.split("\n").slice(0,4)
+
+let table=""
+
+rows.forEach(row=>{
+const cols=row.split(",")
+table+="<tr>"
+
+cols.forEach(col=>{
+table+="<td>"+col+"</td>"
+})
+
+table+="</tr>"
+})
+
+document.querySelector("#previewTable tbody").innerHTML=table
+}
+
+reader.readAsText(file)
+
+}
+
+/* TRAIN MODEL SIMULATION */
+
+function trainModel(){
+
+setTimeout(()=>{
+document.getElementById("successMsg").style.display="block"
+},2000)
+
+}
+
+</script>
+
+</body>
+</html>

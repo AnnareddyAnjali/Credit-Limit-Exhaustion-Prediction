@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Risk Analysis</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#0f172a;
+color:white;
+display:flex;
+}
+
+.sidebar{
+width:220px;
+background:#020617;
+height:100vh;
+position:fixed;
+}
+
+.sidebar h2{
+padding:20px;
+border-bottom:1px solid #1e293b;
+}
+
+.sidebar a{
+display:block;
+padding:12px 20px;
+color:white;
+text-decoration:none;
+}
+
+.sidebar a:hover{
+background:#1e293b;
+}
+
+.main{
+margin-left:220px;
+padding:30px;
+width:100%;
+}
+
+.card{
+background:#111827;
+padding:20px;
+border-radius:8px;
+margin-bottom:20px;
+}
+
+.bar{
+height:12px;
+background:#1e293b;
+border-radius:6px;
+overflow:hidden;
+margin-top:6px;
+}
+
+.fill{
+height:100%;
+background:#3b82f6;
+}
+
+.red{background:#ef4444}
+.yellow{background:#f59e0b}
+.green{background:#10b981}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+<h2>CreditWatch</h2>
+<a href="/dashboard">⬛ Dashboard</a>
+<a href="/predict">🔮 Predict Risk</a>
+<a href="/customers">👥 Customer Records</a>
+<a href="/analysis">📈 Risk Analysis</a>
+<a href="/alerts">🔔 Alerts</a>
+<a href="/dataset">📂 Dataset Upload</a>
+<a href="/model">🤖 Model Info</a>
+<a href="/settings">⚙️ Admin Settings</a>
+</div>
+
+<div class="main">
+
+<h2>Risk Analysis</h2>
+<p>Credit risk statistics overview</p>
+
+<!-- UTILIZATION -->
+<div class="card">
+<h3>Top Credit Utilization</h3>
+<div id="utilBox"></div>
+</div>
+
+<!-- DELAY -->
+<div class="card">
+<h3>Repayment Delay</h3>
+
+<p>No Delay</p>
+<div class="bar"><div class="fill green" id="no"></div></div>
+
+<p>1-5 Days</p>
+<div class="bar"><div class="fill yellow" id="d1"></div></div>
+
+<p>6-14 Days</p>
+<div class="bar"><div class="fill yellow" id="d2"></div></div>
+
+<p>15+ Days</p>
+<div class="bar"><div class="fill red" id="d3"></div></div>
+
+</div>
+
+<!-- SECTOR -->
+<div class="card">
+<h3>Monthly Spending by Sector</h3>
+<div id="sectorBox"></div>
+</div>
+
+</div>
+
+<script>
+
+// 🔄 AUTO UPDATE
+setInterval(loadData, 3000);
+
+function loadData(){
+
+fetch("/analysis_data")
+.then(res => res.json())
+.then(data => {
+
+// ---------- UTILIZATION ----------
+let utilBox = document.getElementById("utilBox");
+utilBox.innerHTML = "";
+
+data.customers.forEach(c => {
+
+utilBox.innerHTML += `
+<p>${c.name} (${c.util}%)</p>
+<div class="bar">
+<div class="fill red" style="width:${c.util}%"></div>
+</div>
+`;
+
+});
+
+// ---------- DELAY ----------
+document.getElementById("no").style.width = data.delay.no + "%";
+document.getElementById("d1").style.width = data.delay.d1_5 + "%";
+document.getElementById("d2").style.width = data.delay.d6_14 + "%";
+document.getElementById("d3").style.width = data.delay.d15 + "%";
+
+// ---------- SECTOR ----------
+let sectorBox = document.getElementById("sectorBox");
+sectorBox.innerHTML = "";
+
+for (let key in data.sector){
+
+let value = data.sector[key];
+
+sectorBox.innerHTML += `
+<p>${key} (${value}%)</p>
+<div class="bar">
+<div class="fill" style="width:${value}%"></div>
+</div>
+`;
+
+}
+
+});
+
+}
+
+// initial load
+loadData();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Settings</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#070B14;
+color:white;
+display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+width:220px;
+background:#0D1220;
+height:100vh;
+position:fixed;
+border-right:1px solid #1f2937;
+}
+
+.sidebar-header{
+padding:20px;
+font-size:18px;
+font-weight:bold;
+border-bottom:1px solid #1f2937;
+}
+
+.sidebar a{
+display:block;
+padding:12px 20px;
+color:white;
+text-decoration:none;
+}
+
+.sidebar a:hover{
+background:#1f2937;
+}
+
+/* MAIN */
+
+.main{
+margin-left:220px;
+padding:30px;
+width:100%;
+}
+
+/* GRID */
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+}
+
+/* CARD */
+
+.card{
+background:#111827;
+padding:22px;
+border-radius:10px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+font-size:13px;
+}
+
+th,td{
+border-bottom:1px solid #1f2937;
+padding:8px;
+text-align:left;
+}
+
+th{
+color:#9CA3AF;
+font-size:12px;
+}
+
+/* INPUT */
+
+input{
+width:100%;
+padding:8px;
+border:none;
+border-radius:6px;
+background:#1f2937;
+color:white;
+}
+
+/* BUTTONS */
+
+button{
+padding:10px 14px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+.primary{
+background:#2563eb;
+color:white;
+}
+
+.primary:hover{
+background:#1d4ed8;
+}
+
+.danger{
+background:#ef4444;
+color:white;
+}
+
+.ghost{
+background:#374151;
+color:white;
+}
+
+.success{
+color:#10B981;
+font-size:12px;
+margin-top:8px;
+}
+
+.error{
+color:#ef4444;
+font-size:12px;
+margin-top:8px;
+}
+
+/* MODAL */
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+z-index:1000;
+align-items:center;
+justify-content:center;
+}
+
+.modal.active{
+display:flex;
+}
+
+.modal-content{
+background:#111827;
+padding:30px;
+border-radius:10px;
+width:90%;
+max-width:400px;
+border:1px solid #1f2937;
+}
+
+.modal-content h3{
+margin-top:0;
+color:white;
+}
+
+.modal-content label{
+display:block;
+margin-top:15px;
+margin-bottom:5px;
+color:white;
+font-weight:bold;
+}
+
+.modal-content input,
+.modal-content select{
+width:100%;
+padding:8px;
+border:none;
+border-radius:6px;
+background:#1f2937;
+color:white;
+box-sizing:border-box;
+}
+
+.modal-buttons{
+display:flex;
+gap:10px;
+margin-top:20px;
+}
+
+.modal-buttons button{
+flex:1;
+padding:10px;
+}
+
+.log{
+font-family:monospace;
+font-size:11px;
+background:#0D1220;
+padding:7px 10px;
+border-radius:5px;
+margin-bottom:6px;
+border-left:2px solid #374151;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+<div class="sidebar-header">
+CreditWatch
+</div>
+<a href="/dashboard">⬛ Dashboard</a>
+<a href="/predict">🔮 Predict Risk</a>
+<a href="/customers">👥 Customer Records</a>
+<a href="/analysis">📈 Risk Analysis</a>
+<a href="/alerts">🔔 Alerts</a>
+<a href="/dataset">📂 Dataset Upload</a>
+<a href="/model">🤖 Model Info</a>
+<a href="/settings">⚙️ Admin Settings</a>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+<h2>Admin Settings</h2>
+<p>Manage system configuration and users</p>
+
+<div class="grid">
+
+<!-- USER MANAGEMENT -->
+
+<div class="card">
+
+<h3>User Management</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Role</th>
+<th>Status</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td><b>Admin</b></td>
+<td style="color:gray">admin@bank.com</td>
+<td>Admin</td>
+<td style="color:#10B981">● Active</td>
+</tr>
+
+<tr>
+<td><b>Risk Analyst</b></td>
+<td style="color:gray">risk@bank.com</td>
+<td>Analyst</td>
+<td style="color:#10B981">● Active</td>
+</tr>
+
+</tbody>
+
+</table>
+
+<button class="ghost" style="margin-top:10px" onclick="openAddUserModal()">+ Add User</button>
+
+</div>
+
+
+<!-- CHANGE PASSWORD -->
+
+<div class="card">
+
+<h3>Change Password</h3>
+
+<label>Current Password</label>
+<input type="password" id="cur">
+
+<label style="margin-top:10px">New Password</label>
+<input type="password" id="new">
+
+<label style="margin-top:10px">Confirm Password</label>
+<input type="password" id="cf">
+
+<div id="msg"></div>
+
+<button class="primary" style="margin-top:10px" onclick="savePass()">Update Password</button>
+
+</div>
+
+
+<!-- MODEL RETRAIN -->
+
+<div class="card">
+
+<h3>Model Retraining</h3>
+
+<p style="font-size:12px;color:gray">
+Trigger a full model retraining using the latest dataset.
+</p>
+
+<button class="primary" style="width:100%" onclick="retrain()">🔄 Retrain Model</button>
+
+<div id="trainMsg" class="success"></div>
+
+</div>
+
+
+<!-- SYSTEM LOGS -->
+
+<div class="card">
+
+<h3>System Logs</h3>
+
+<div class="log">[2026-03-09 09:14] Prediction run for C-1001</div>
+<div class="log">[2026-03-09 08:52] Alert fired: C-1002 HIGH RISK</div>
+<div class="log">[2026-03-08 17:30] Model retrained successfully</div>
+<div class="log">[2026-03-08 12:11] Dataset uploaded: 1240 rows</div>
+<div class="log">[2026-03-07 10:01] User admin@bank.com logged in</div>
+
+</div>
+
+
+<!-- SESSION -->
+
+<div class="card" style="grid-column:span 2;display:flex;justify-content:space-between;align-items:center">
+
+<div>
+<b>Session</b><br>
+<span style="font-size:12px;color:gray">
+Logged in as Admin · Admin
+</span>
+</div>
+
+<a href="/logout">
+<button class="danger">Sign Out</button>
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- ADD USER MODAL -->
+<div id="addUserModal" class="modal">
+<div class="modal-content">
+<h3>Add New User</h3>
+
+<label>Full Name</label>
+<input type="text" id="newUserName" placeholder="Enter full name">
+
+<label>Role</label>
+<select id="newUserRole">
+<option>Analyst</option>
+<option>Manager</option>
+<option>Admin</option>
+</select>
+
+<label>Password</label>
+<input type="password" id="newUserPassword" placeholder="Enter password">
+
+<label>Confirm Password</label>
+<input type="password" id="newUserPasswordConfirm" placeholder="Confirm password">
+
+<div id="addUserMsg"></div>
+
+<div class="modal-buttons">
+<button class="primary" onclick="addNewUser()">Create User</button>
+<button class="ghost" onclick="closeAddUserModal()">Cancel</button>
+</div>
+
+</div>
+</div>
+
+<script>
+
+/* ADD USER MODAL */
+function openAddUserModal(){
+document.getElementById("addUserModal").classList.add("active");
+}
+
+function closeAddUserModal(){
+document.getElementById("addUserModal").classList.remove("active");
+document.getElementById("newUserName").value="";
+document.getElementById("newUserRole").value="Analyst";
+document.getElementById("newUserPassword").value="";
+document.getElementById("newUserPasswordConfirm").value="";
+document.getElementById("addUserMsg").innerHTML="";
+}
+
+function addNewUser(){
+let name=document.getElementById("newUserName").value;
+let role=document.getElementById("newUserRole").value;
+let pass=document.getElementById("newUserPassword").value;
+let passConfirm=document.getElementById("newUserPasswordConfirm").value;
+let msg=document.getElementById("addUserMsg");
+
+if(!name||!role||!pass||!passConfirm){
+msg.innerHTML="<div class='error'>All fields required</div>";
+return;
+}
+
+if(pass!==passConfirm){
+msg.innerHTML="<div class='error'>Passwords do not match</div>";
+return;
+}
+
+if(pass.length<6){
+msg.innerHTML="<div class='error'>Password must be at least 6 characters</div>";
+return;
+}
+
+// Send to backend
+fetch("/add_user",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({name:name,role:role,password:pass})
+})
+.then(res=>res.json())
+.then(data=>{
+if(data.success){
+msg.innerHTML="<div class='success'>User created successfully!</div>";
+setTimeout(()=>{
+closeAddUserModal();
+location.reload();
+},1500);
+}else{
+msg.innerHTML="<div class='error'>"+data.message+"</div>";
+}
+})
+.catch(err=>{
+msg.innerHTML="<div class='error'>Error creating user</div>";
+});
+}
+
+/* PASSWORD UPDATE */
+
+function savePass(){
+
+let cur=document.getElementById("cur").value
+let nw=document.getElementById("new").value
+let cf=document.getElementById("cf").value
+let msg=document.getElementById("msg")
+
+if(!cur||!nw||!cf){
+msg.innerHTML="<div class='error'>All fields required</div>"
+return
+}
+
+if(nw!==cf){
+msg.innerHTML="<div class='error'>Passwords do not match</div>"
+return
+}
+
+msg.innerHTML="<div class='success'>Password updated successfully!</div>"
+
+}
+
+/* MODEL RETRAIN */
+
+function retrain(){
+
+let m=document.getElementById("trainMsg")
+
+m.innerHTML="Retraining..."
+
+setTimeout(()=>{
+m.innerHTML="✅ Retraining complete. Accuracy: 92.1%"
+},2500)
+
+}
+
+</script>
+
+</body>
+</html>

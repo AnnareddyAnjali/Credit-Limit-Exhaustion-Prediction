@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>CreditWatch Login</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Segoe UI, Arial;
+background:#070B14;
+color:#E2E8F4;
+height:100vh;
+display:flex;
+}
+
+.left{
+flex:1;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:60px;
+}
+
+.login-box{
+max-width:420px;
+width:100%;
+}
+
+.logo{
+display:flex;
+align-items:center;
+gap:10px;
+margin-bottom:40px;
+}
+
+.logo-box{
+width:38px;
+height:38px;
+border-radius:10px;
+background:linear-gradient(135deg,#3B82F6,#06B6D4);
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-weight:bold;
+}
+
+.title{
+font-size:28px;
+font-weight:800;
+margin-bottom:8px;
+}
+
+.subtitle{
+font-size:13px;
+color:rgba(226,232,244,0.45);
+margin-bottom:30px;
+}
+
+label{
+font-size:11px;
+color:rgba(226,232,244,0.45);
+display:block;
+margin-bottom:5px;
+}
+
+input,select{
+width:100%;
+padding:10px;
+background:#111827;
+border:1px solid rgba(255,255,255,0.07);
+border-radius:6px;
+color:white;
+margin-bottom:14px;
+}
+
+button{
+width:100%;
+padding:13px;
+background:#3B82F6;
+border:none;
+border-radius:6px;
+color:white;
+font-weight:600;
+cursor:pointer;
+}
+
+button:hover{
+background:#2563EB;
+}
+
+.demo{
+margin-top:20px;
+padding:12px;
+background:rgba(59,130,246,0.06);
+border:1px solid rgba(59,130,246,0.2);
+border-radius:8px;
+font-size:11px;
+}
+
+.right{
+width:420px;
+background:#0D1220;
+border-left:1px solid rgba(255,255,255,0.07);
+padding:60px 40px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+}
+
+.feature{
+display:flex;
+gap:12px;
+padding:12px 0;
+border-bottom:1px solid rgba(255,255,255,0.07);
+}
+
+.feature span{
+font-size:18px;
+}
+
+.feature-title{
+font-size:13px;
+font-weight:600;
+}
+
+.feature-sub{
+font-size:11px;
+color:rgba(226,232,244,0.45);
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="left">
+
+<div class="login-box">
+
+<div class="logo">
+<div class="logo-box">+</div>
+<div>
+<div style="font-weight:800">CreditWatch</div>
+<div style="font-size:11px;color:rgba(226,232,244,0.45)">Banking Analytics Platform</div>
+</div>
+</div>
+
+<div class="title">Welcome back</div>
+<div class="subtitle">Sign in to access the credit monitoring system</div>
+
+<form method="POST">
+
+<label>Email</label>
+<input type="email" name="username" placeholder="admin@bank.com" required>
+
+<label>Password</label>
+<input type="password" name="password" required>
+
+<button type="submit">Sign In →</button>
+
+</form>
+
+<div class="demo">
+Admin: admin@bank.com / admin<br>
+Analyst: analyst@bank.com / 1234
+</div>
+
+</div>
+
+</div>
+
+<div class="right">
+
+<div style="font-size:13px;color:rgba(226,232,244,0.45);margin-bottom:20px">
+Platform Capabilities
+</div>
+
+<div class="feature">
+<span>📊</span>
+<div>
+<div class="feature-title">Dashboard Overview</div>
+<div class="feature-sub">Real-time credit risk monitoring</div>
+</div>
+</div>
+
+<div class="feature">
+<span>🔮</span>
+<div>
+<div class="feature-title">ML Risk Prediction</div>
+<div class="feature-sub">AI-powered exhaustion forecasting</div>
+</div>
+</div>
+
+<div class="feature">
+<span>⚠️</span>
+<div>
+<div class="feature-title">Smart Alerts</div>
+<div class="feature-sub">Trigger alerts when limits are hit</div>
+</div>
+</div>
+
+<div class="feature">
+<span>📈</span>
+<div>
+<div class="feature-title">Risk Analytics</div>
+<div class="feature-sub">Charts & trend visualizations</div>
+</div>
+</div>
+
+<div class="feature">
+<span>🛡</span>
+<div>
+<div class="feature-title">Admin Controls</div>
+<div class="feature-sub">User management & model retraining</div>
+</div>
+</div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Dashboard</title>
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#070B14;
+color:#E2E8F4;
+display:flex;
+}
+
+/* SIDEBAR */
+.sidebar{
+width:220px;
+background:#0D1220;
+height:100vh;
+position:fixed;
+border-right:1px solid #1f2937;
+}
+
+.sidebar h2{
+padding:20px;
+margin:0;
+font-size:18px;
+}
+
+.sidebar a{
+display:block;
+padding:12px 20px;
+color:#E2E8F4;
+text-decoration:none;
+font-size:14px;
+}
+
+.sidebar a:hover{
+background:#1f2937;
+}
+
+/* MAIN */
+.main{
+margin-left:220px;
+padding:30px;
+width:100%;
+}
+
+/* HEADER */
+.header{
+margin-bottom:25px;
+}
+
+.header h1{
+margin:0;
+font-size:24px;
+}
+
+.live{
+color:#22c55e;
+font-size:12px;
+}
+
+/* CARDS */
+.cards{
+display:grid;
+grid-template-columns:repeat(4,1fr);
+gap:15px;
+margin-bottom:25px;
+}
+
+.card{
+background:#111827;
+padding:20px;
+border-radius:10px;
+}
+
+.card-title{
+font-size:12px;
+color:#9CA3AF;
+}
+
+.card-value{
+font-size:26px;
+font-weight:bold;
+margin-top:5px;
+}
+
+/* TABLE */
+.table{
+background:#111827;
+padding:20px;
+border-radius:10px;
+margin-top:20px;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+}
+
+th,td{
+padding:10px;
+text-align:left;
+font-size:13px;
+}
+
+th{
+color:#9CA3AF;
+}
+
+tr{
+border-bottom:1px solid #1f2937;
+}
+
+/* COLORS */
+.critical{color:#ef4444;}
+.high{color:#f97316;}
+.medium{color:#eab308;}
+.low{color:#22c55e;}
+
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+<h2>CreditWatch</h2>
+
+<a href="/dashboard">⬛ Dashboard</a>
+<a href="/predict">🔮 Predict Risk</a>
+<a href="/customers">👥 Customer Records</a>
+<a href="/analysis">📈 Risk Analysis</a>
+<a href="/alerts">🔔 Alerts</a>
+<a href="/dataset">📂 Dataset Upload</a>
+<a href="/model">🤖 Model Info</a>
+<a href="/settings">⚙️ Admin Settings</a>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<div class="header">
+<h1>Dashboard Overview</h1>
+<div class="live">● Live Monitoring</div>
+</div>
+
+<!-- CARDS -->
+<div class="cards">
+
+<div class="card">
+<div class="card-title">Total Customers</div>
+<div class="card-value" id="total">{{ total_customers }}</div>
+</div>
+
+<div class="card">
+<div class="card-title">Critical Risk</div>
+<div class="card-value critical" id="critical">{{ critical }}</div>
+</div>
+
+<div class="card">
+<div class="card-title">Medium Risk</div>
+<div class="card-value medium" id="medium">{{ medium }}</div>
+</div>
+
+<div class="card">
+<div class="card-title">Low Risk</div>
+<div class="card-value low" id="low">{{ low }}</div>
+</div>
+
+</div>
+
+<!-- CUSTOMER TABLE -->
+<div class="table">
+
+<h3>Credit Utilization by Customer</h3>
+
+<table>
+
+<tr>
+<th>Customer</th>
+<th>Balance</th>
+<th>Limit</th>
+<th>Utilization</th>
+<th>Risk</th>
+</tr>
+
+{% for c in customers %}
+
+<tr>
+<td>{{ c.name }}</td>
+<td>{{ c.balance }}</td>
+<td>{{ c.limit }}</td>
+<td>{{ c.percent }}%</td>
+<td class="{{ c.risk }}">{{ c.risk }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+<!-- ALERTS -->
+<div class="table">
+
+<h3>Recent Alerts</h3>
+
+<table>
+
+<tr>
+<th>Customer</th>
+<th>Utilization</th>
+<th>Days Left</th>
+<th>Risk</th>
+</tr>
+
+{% for a in alerts %}
+
+<tr>
+<td>{{ a.name }}</td>
+<td>{{ a.percent }}%</td>
+<td>{{ a.days_left }}</td>
+<td class="{{ a.risk }}">{{ a.risk }}</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+<!-- ✅ RECENT PREDICTIONS -->
+<div class="table">
+
+<h3>Recent Predictions</h3>
+
+<table>
+
+<tr>
+<th>Name</th>
+<th>Prediction</th>
+<th>Probability</th>
+</tr>
+
+{% for c in customers[-5:] %}
+
+<tr>
+<td>{{ c.name }}</td>
+<td class="{{ c.risk }}">{{ c.risk }}</td>
+<td>{{ c.probability if c.probability else '-' }}%</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+</div>
+
+</div>
+
+<!-- 🔥 REAL-TIME SCRIPT -->
+<script>
+
+// auto update every 3 seconds
+setInterval(fetchDashboardData, 3000);
+
+function fetchDashboardData(){
+
+fetch("/dashboard_data")
+.then(res => res.json())
+.then(data => {
+
+document.getElementById("total").innerText = data.total;
+document.getElementById("critical").innerText = data.critical;
+document.getElementById("medium").innerText = data.medium;
+document.getElementById("low").innerText = data.low;
+
+})
+.catch(err => console.error(err));
+
+}
+
+</script>
+
+</body>
+</html>
+
+
+
+
+
+

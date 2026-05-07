@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Predict Credit Risk</title>
+
+<style>
+body{
+margin:0;
+font-family:Arial;
+background:#070B14;
+color:white;
+display:flex;
+}
+
+/* SIDEBAR */
+.sidebar{
+width:220px;
+background:#0D1220;
+height:100vh;
+position:fixed;
+border-right:1px solid #1f2937;
+}
+
+.sidebar-header{
+padding:20px;
+font-size:18px;
+font-weight:bold;
+border-bottom:1px solid #1f2937;
+}
+
+.sidebar a{
+display:block;
+padding:12px 20px;
+color:#9CA3AF;
+text-decoration:none;
+}
+
+.sidebar a.active,
+.sidebar a:hover{
+background:#1f2937;
+color:white;
+}
+
+.user{
+position:absolute;
+bottom:0;
+padding:20px;
+border-top:1px solid #1f2937;
+width:100%;
+}
+
+/* MAIN */
+.main{
+margin-left:220px;
+padding:30px;
+width:100%;
+}
+
+.row{
+display:flex;
+gap:20px;
+}
+
+.card{
+background:#111827;
+padding:20px;
+border-radius:12px;
+flex:1;
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px;
+}
+
+input,select{
+padding:10px;
+border:none;
+border-radius:8px;
+background:#1f2937;
+color:white;
+width:100%;
+}
+
+label{
+display:block;
+margin-bottom:5px;
+color:white;
+font-weight:bold;
+}
+
+button{
+padding:12px;
+border:none;
+border-radius:8px;
+cursor:pointer;
+margin-top:10px;
+}
+
+.primary{
+background:#2563eb;
+color:white;
+}
+
+.secondary{
+background:#1f2937;
+color:white;
+}
+
+/* RESULT */
+.result-box{
+background:#1a1412;
+border:1px solid #f97316;
+padding:20px;
+border-radius:12px;
+text-align:center;
+}
+
+.high{color:#f97316;}
+.low{color:#22c55e;}
+.medium{color:#eab308;}
+
+.metrics{
+display:flex;
+gap:10px;
+margin-top:10px;
+}
+
+.metric{
+flex:1;
+background:#0f172a;
+padding:10px;
+border-radius:10px;
+text-align:center;
+}
+
+.recommend{
+margin-top:15px;
+background:#0f172a;
+padding:10px;
+border-radius:10px;
+}
+
+.save-btn{
+margin-top:15px;
+width:100%;
+background:#3b82f6;
+color:white;
+}
+</style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+<div class="sidebar-header">CreditWatch</div>
+<a href="/dashboard">⬛ Dashboard</a>
+<a href="/predict">🔮 Predict Risk</a>
+<a href="/customers">👥 Customer Records</a>
+<a href="/analysis">📈 Risk Analysis</a>
+<a href="/alerts">🔔 Alerts</a>
+<a href="/dataset">📂 Dataset Upload</a>
+<a href="/model">🤖 Model Info</a>
+<a href="/settings">⚙️ Admin Settings</a>
+</div>
+
+<div class="user">
+User: {{ session['user'] }}
+</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+<h2>Customer Risk Prediction</h2>
+<p>Enter customer details to run ML model prediction</p>
+
+<div class="row">
+
+<!-- FORM -->
+<div class="card">
+
+<form id="form">
+
+<div class="grid">
+
+<label>Customer ID</label>
+<input name="id">
+
+<label>Customer Name</label>
+<input name="name">
+
+<label>Credit Limit</label>
+<input name="limit" type="number">
+
+<label>Outstanding Balance</label>
+<input name="balance" type="number">
+
+<label>Monthly Spending</label>
+<input name="monthly" type="number">
+
+<label>Transactions</label>
+<input name="txCount" type="number">
+
+<label>Payment History</label>
+<select name="payHist">
+<option>Excellent</option>
+<option>Good</option>
+<option>Fair</option>
+<option>Poor</option>
+</select>
+
+<label>Delay Days</label>
+<input name="delay" type="number">
+
+<label>Minimum Payment Met</label>
+<select name="minPay">
+<option>Yes</option>
+<option>No</option>
+</select>
+
+</div>
+
+<button class="primary" type="submit">Predict Risk</button>
+<button type="reset" class="secondary">Clear</button>
+
+</form>
+
+</div>
+
+<!-- RESULT -->
+<div class="card">
+
+<h3>Prediction Result</h3>
+
+<div id="resultArea">
+<p>No prediction yet</p>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- SCRIPT -->
+<script>
+
+const form = document.getElementById("form");
+const resultArea = document.getElementById("resultArea");
+
+let latestData = {};
+let latestResult = {};
+
+// 🔮 PREDICT
+form.addEventListener("submit", async (e)=>{
+e.preventDefault();
+
+const data = Object.fromEntries(new FormData(form).entries());
+
+const res = await fetch("/predict_api",{
+method:"POST",
+headers:{ "Content-Type":"application/json"},
+body: JSON.stringify(data)
+});
+
+const result = await res.json();
+
+// store
+latestData = data;
+latestResult = result;
+
+// metrics
+let utilization = ((data.balance / data.limit) * 100).toFixed(1);
+let daysLeft = Math.max(0, 30 - data.delay);
+
+// UI update
+resultArea.innerHTML = `
+<h3>${data.name}</h3>
+<p>${data.id}</p>
+
+<div class="result-box">
+<h2 class="${result.prediction}">${result.prediction.toUpperCase()}</h2>
+<p>Probability: ${result.probability}%</p>
+</div>
+
+<div class="metrics">
+<div class="metric">Utilization<br><b>${utilization}%</b></div>
+<div class="metric">Days Left<br><b>${daysLeft}</b></div>
+<div class="metric">History<br><b>${data.payHist}</b></div>
+</div>
+
+<div class="recommend">
+<b>Recommendation:</b><br>
+${result.recommendation}
+</div>
+
+<button class="save-btn" onclick="saveHistory()">
++ Save to Customer Records
+</button>
+`;
+
+});
+
+
+// 💾 SAVE
+function saveHistory(){
+
+fetch("/save_customer",{
+method:"POST",
+headers:{ "Content-Type":"application/json"},
+body: JSON.stringify({
+name: latestData.name,
+id: latestData.id,
+limit: latestData.limit,
+balance: latestData.balance,
+prediction: latestResult.prediction,
+probability: latestResult.probability
+})
+})
+.then(res => res.json())
+.then(() => alert("✅ Saved to Customer Records!"))
+.catch(err => {
+alert("❌ Error saving");
+console.error(err);
+});
+
+}
+
+</script>
+
+</body>
+</html>
